@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Biznes Diagnostika 360 | Interaktiv so‘rovnoma</title>
+  <meta name="description" content="Biznes model, bozor, tizim, instrumentlar va ta’sischi rolini diagnostika qilish uchun interaktiv so‘rovnoma." />
+  <style>
+    :root{
+      --bg:#f4f7f5; --card:#ffffff; --text:#102018; --muted:#5e6b63; --line:#dfe8e2;
+      --green:#0f6b3d; --green2:#128a4d; --soft:#eaf5ee; --warn:#b45309; --danger:#b91c1c;
+      --shadow:0 18px 45px rgba(13,53,34,.10); --radius:22px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,Arial,sans-serif;background:linear-gradient(135deg,#f4f7f5 0%,#eaf5ee 100%);color:var(--text)}
+    a{color:var(--green)}
+    .wrap{max-width:1120px;margin:auto;padding:22px}
+    .hero{display:grid;grid-template-columns:1.35fr .65fr;gap:20px;align-items:stretch;margin-top:14px}
+    .panel,.card{background:rgba(255,255,255,.86);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+    .panel{padding:30px;position:relative;overflow:hidden}
+    .panel:after{content:"";position:absolute;right:-80px;top:-80px;width:220px;height:220px;border-radius:50%;background:rgba(15,107,61,.10)}
+    .eyebrow{display:inline-flex;gap:8px;align-items:center;background:var(--soft);color:var(--green);padding:8px 12px;border-radius:999px;font-weight:700;font-size:13px}
+    h1{font-size:42px;line-height:1.05;margin:16px 0 12px;letter-spacing:-.03em}
+    .lead{font-size:17px;color:var(--muted);line-height:1.65;max-width:720px}
+    .meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+    .pill{background:#fff;border:1px solid var(--line);border-radius:999px;padding:9px 12px;color:#314239;font-size:13px;font-weight:650}
+    .side{padding:22px;display:flex;flex-direction:column;justify-content:space-between}
+    .scoreBox{background:#102018;color:#fff;border-radius:18px;padding:18px}
+    .scoreBox b{font-size:34px;display:block}
+    .progressOuter{height:10px;background:#e3ebe6;border-radius:999px;overflow:hidden;margin-top:16px}
+    .progressInner{height:100%;background:linear-gradient(90deg,var(--green),var(--green2));width:0%;transition:.25s}
+    .layout{display:grid;grid-template-columns:280px 1fr;gap:20px;margin-top:22px}
+    .nav{padding:14px;position:sticky;top:18px;height:max-content}
+    .nav button{display:block;width:100%;text-align:left;background:transparent;border:1px solid transparent;border-radius:14px;padding:12px;margin:4px 0;color:#26372e;cursor:pointer;font-weight:700}
+    .nav button.active{background:var(--soft);border-color:#cce3d5;color:var(--green)}
+    .nav small{display:block;color:var(--muted);font-weight:500;margin-top:3px}
+    .content{display:flex;flex-direction:column;gap:16px}
+    .block{padding:22px}
+    .block h2{margin:0 0 8px;font-size:26px;letter-spacing:-.02em}
+    .purpose{color:var(--muted);line-height:1.55;margin-bottom:18px}
+    .q{border-top:1px solid var(--line);padding:18px 0}
+    .q:first-of-type{border-top:0}
+    .qTitle{font-weight:800;margin-bottom:12px;line-height:1.45}
+    .options{display:grid;gap:9px}
+    label.opt{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);background:#fff;border-radius:14px;padding:12px;cursor:pointer;transition:.15s}
+    label.opt:hover{border-color:#b7d5c2;background:#fbfffc}
+    input[type="radio"],input[type="checkbox"]{margin-top:2px;accent-color:var(--green)}
+    input[type="text"],input[type="tel"],textarea,select{width:100%;border:1px solid var(--line);border-radius:14px;padding:13px 14px;font:inherit;background:#fff;outline:none}
+    textarea{min-height:96px;resize:vertical}
+    input[type="range"]{width:100%;accent-color:var(--green)}
+    .rangeRow{display:flex;align-items:center;gap:14px}.rangeNum{font-size:28px;font-weight:900;color:var(--green);min-width:42px;text-align:center}
+    .actions{display:flex;gap:12px;flex-wrap:wrap;margin:18px 0 30px}.btn{border:0;border-radius:15px;padding:13px 18px;font-weight:850;cursor:pointer}.primary{background:var(--green);color:#fff}.secondary{background:#fff;border:1px solid var(--line);color:#143123}.danger{background:#fff2f2;border:1px solid #f4c7c7;color:var(--danger)}
+    .result{padding:22px;border-left:6px solid var(--green);display:none}.result h2{margin-top:0}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.metric{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px}.metric b{font-size:24px;color:var(--green)}
+    .adminLogin{display:none;margin-top:22px}.admin{display:none;margin-top:22px}.tableWrap{overflow:auto;border:1px solid var(--line);border-radius:16px;background:#fff}table{border-collapse:collapse;width:100%;min-width:850px}th,td{border-bottom:1px solid var(--line);padding:10px;text-align:left;font-size:13px;vertical-align:top}th{background:var(--green);color:#fff;position:sticky;top:0}canvas{background:#fff;border:1px solid var(--line);border-radius:16px;padding:10px;max-width:100%}.notice{background:#fff8e8;border:1px solid #f4d49a;color:#6d4200;border-radius:16px;padding:14px;line-height:1.5}
+    @media(max-width:850px){.hero,.layout{grid-template-columns:1fr}.nav{position:static}.grid3{grid-template-columns:1fr}h1{font-size:32px}.panel{padding:22px}.wrap{padding:14px}}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <section class="hero">
+    <div class="panel">
+      <span class="eyebrow">Biznes Diagnostika 360</span>
+      <h1>Biznesdagi xaos, tor joy va tizim muammolarini aniqlash so‘rovnomasi</h1>
+      <p class="lead">So‘rovnoma biznes-model, bozor, ichki tizim, boshqaruv instrumentlari va ta’sischining operatsion rolini baholaydi. Yakunda umumiy diagnostika balli va ustuvor tavsiyalar chiqadi.</p>
+      <div class="meta"><span class="pill">6 blok</span><span class="pill">Interaktiv scoring</span><span class="pill">Google Sheets backendga tayyor</span><span class="pill">Admin dashboard</span></div>
+    </div>
+    <aside class="card side">
+      <div class="scoreBox"><span>To‘ldirish jarayoni</span><b id="progressText">0%</b><div class="progressOuter"><div id="progressBar" class="progressInner"></div></div></div>
+      <div class="notice" style="margin-top:14px">Admin panelni ochish: <b>?admin=1</b> qo‘shing. Demo parol: <b>admin123</b>. Real loyihada bu himoya yetarli emas.</div>
+    </aside>
+  </section>
+
+  <div class="layout">
+    <aside class="card nav" id="nav"></aside>
+    <main class="content">
+      <form id="surveyForm"></form>
+      <div class="actions">
+        <button class="btn primary" id="submitBtn" type="button">Natijani hisoblash va yuborish</button>
+        <button class="btn secondary" id="saveBtn" type="button">Draft saqlash</button>
+        <button class="btn danger" id="resetBtn" type="button">Tozalash</button>
+      </div>
+      <section class="card result" id="result"></section>
+
+      <section class="card adminLogin" id="adminLogin">
+        <div class="block">
+          <h2>Admin panel</h2>
+          <p class="purpose">Demo rejim: parol faqat frontendda tekshiriladi. Ishlab turgan biznesda Firebase/Supabase yoki Google login kerak.</p>
+          <input id="adminPass" type="password" placeholder="Admin parol" />
+          <div class="actions"><button class="btn primary" type="button" id="loginBtn">Kirish</button></div>
+        </div>
+      </section>
+
+      <section class="card admin" id="adminPanel">
+        <div class="block">
+          <h2>Dashboard</h2>
+          <div class="grid3" id="adminMetrics"></div>
+          <div class="actions">
+            <button class="btn secondary" type="button" id="exportCsv">CSV yuklab olish</button>
+            <button class="btn secondary" type="button" id="exportJson">JSON yuklab olish</button>
+            <button class="btn danger" type="button" id="clearData">Demo bazani tozalash</button>
+          </div>
+          <canvas id="chart" width="900" height="280"></canvas>
+          <h3>So‘rovlar</h3>
+          <div class="tableWrap"><table id="responsesTable"></table></div>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<script>
+/* 1) BACKEND sozlamasi
+   Google Apps Script Web App URL ni shu yerga yozing. Bo‘sh qolsa, test uchun localStorage ishlaydi. */
+const CONFIG = {
+  API_URL: "", // masalan: "https://script.google.com/macros/s/AKfycb.../exec"
+  ADMIN_PASSWORD: "admin123"
+};
+
+const survey = [
+  { id:"business_model", title:"1-блок. Бизнес-модель", purpose:"Бизнес қандай даромад кўраётганини, қиймат қаерда яратилаётганини ва модель қаерда ортиқча юклама билан ишлаётганини тушуниш.", questions:[
+    {id:"bm_income", type:"radio", score:true, text:"Ҳозирги вақтда компания асосан нима орқали даромад топмоқда?", options:["Ўз маҳсулотини ишлаб чиқариш ва сотиш","Қайта сотиш / Дистрибуция","Хизмат кўрсатиш","Лойиҳа асосидаги буюртмалар","Бир вақтнинг ўзида бир нечта йўналишлар"]},
+    {id:"bm_profit_source", type:"text", text:"Қайси маҳсулот ёки йўналиш фойданинг асосий қисмини бермоқда?"},
+    {id:"bm_tension", type:"checkbox", score:true, text:"Ҳозирда бизнес-моделнинг қайси қисмида энг кўп қийинчилик сезилмоқда?", options:["Таннарх ошмоқда","Маржа тушмоқда","Иш ҳажмини режалаштириш қийин","Қўлда бошқарув жуда кўп","1–2 та йирик мижозга боғланиб қолганлик","Ҳамма нарса таъсисчига боғлиқ","Йўналишлар кўп, лекин аниқ фокус йўқ","Қаерда реал фойда кўпроқ эканлигини тушунмаяпман"]}
+  ]},
+  { id:"market", title:"2-блок. Бозор ва мижозлар", purpose:"Талаб қанчалик барқарорлигини, ким сотиб олаётганини ва ўсиш имкониятларини аниқлаш.", questions:[
+    {id:"market_clients", type:"checkbox", score:true, text:"Ҳозирги кунда асосий мижозларингиз кимлар?", options:["Хусусий мижозлар","Кичик бизнес","Ўрта бизнес","Йирик компаниялар","Дилерлар / Шериклар","Давлат буюртмалари","Аралаш аудитория"]},
+    {id:"market_why", type:"text", text:"Нима учун мижозлар айнан сизни танлашади?"},
+    {id:"market_flow", type:"radio", score:true, text:"Янги мижозлар оқими қанчалик барқарор?", options:["Барқарор","Мавсумийлик бор, лекин тушунарли","Тез-тез пасайишлар бўлиб туради","Рекламага / танишларга / таъсисчига қаттиқ боғлиқ","Олдиндан айтиб бўлмайди"]},
+    {id:"market_loss", type:"checkbox", score:true, text:"Кўпинча қаерда мижозлар ёки пул йўқотилмоқда?", options:["Мижоз нархни сўрайди ва йўқолиб қолади","Буюртмалар секин қайта ишланади","Менежерлар охиригача ишлашмайди","Компанияга нисбатан ишонч етишмайди","Ишлаб чиқариш / омбор улгурмаяпти","Аниқ ва жозибадор таклиф йўқ","Маркетинг нотўғри мижозларни олиб келмоқда","Аниқ билмаймиз"]}
+  ]},
+  { id:"system", title:"3-блок. Тизим", purpose:"Бизнеснинг эгасига боғланиб қолганлигини, жараёнлар ва масъулият тақсимотини аниқлаш.", questions:[
+    {id:"sys_absence", type:"radio", score:true, text:"Агар сиз 2-3 кун ишда бўлмасангиз, компанияда нима содир бўлади?", options:["Ҳамма нарса барқарор ишлайди","Саволларнинг бир қисми кечиктирилади","Кўпчилик қарорлар мени кутади","Тартибсизлик бошланади","Мен ишдан узоқлаша олмайман"]},
+    {id:"sys_questions", type:"radio", score:true, text:"Ходимлар аллақачон жавобини билиши керак бўлган саволларни қанчалик тез-тез беришади?", options:["Камдан-кам","Гоҳида","Ҳар куни","Доимий равишда"]},
+    {id:"sys_roles", type:"range", score:true, reverse:true, text:"Компанияда роллар ва масъулият қанчалик аниқ тақсимланган?", min:1, max:10},
+    {id:"sys_repeat", type:"checkbox", score:true, text:"Қайси тизимли муаммолар энг кўп такрорланади?", options:["Бир хил хатолар такрорланади","Муддатлар бузилади","Масъулиятни бошқага ағдариш","Вазифалар йўқолиб қолади","Ходимлар ўз билганича иш қилади","Ҳамма нарсани шахсан назорат қилишга тўғри келади","Ишнинг аниқ қоидалари йўқ","Мунтазам режалаштириш йўқ"]},
+    {id:"sys_key_staff", type:"radio", score:true, text:"Агар эртага 1-2 та асосий ходим ишдан кетса, нима бўлади?", options:["Деярли ҳеч нарса, тизим бардош беради","Қийинчиликлар бўлади, лекин уддалаймиз","Баъзи жараёнлар сезиларли даражада тўхтайди","Ишнинг бир қисми тўхтаб қолади","Бу бизнес учун жиддий зарба бўлади"]}
+  ]},
+  { id:"tools", title:"4-блок. Инструментлар", purpose:"Бошқарув нимага таянаётганини тушуниш: WhatsApp, Excel, CRM, 1C ва ҳ.к.", questions:[
+    {id:"tools_place", type:"checkbox", score:true, text:"Асосий вазифалар ва иш назорати қаерда олиб борилади?", options:["WhatsApp / Telegram","Excel / Google Таблицалар","CRM тизими","1С дастури","Trello / Asana / Bitrix / ва бошқалар","Раҳбарларнинг хотирасида","Оғзаки равишда","Ягона тизим мавжуд эмас"]},
+    {id:"tools_detection", type:"radio", score:true, text:"Бизнесда бирор нарса нотўғри кетаётганини қанчалик тез пайқайсиз?", options:["Деярли дарҳол кўраман","Бир-икки кундан кейин","Муаммо яққол кўзга ташланганда","Одатда кеч билиб қоламан","Фақат мижоз ёки ходим шикоят қилганда"]},
+    {id:"tools_numbers", type:"checkbox", score:true, reverse:true, text:"Қайси рақамларни мунтазам равишда кузатиб борасиз?", options:["Савдо ҳажми","Фойда / маржа","Қолдиқлар / омбор","Иш унумдорлиги","Буюртмалар ва конверсия","Дебиторлик қарздорлиги","Вазифаларнинг бажарилиши","Реклама / лидлар","Тизимли равишда деярли қарамайман"]},
+    {id:"tools_blocker", type:"checkbox", score:true, text:"Ҳозирда инструментларнинг бизнесга реал ёрдам беришига нима халақит бермоқда?", options:["Маълумотлар мунтазам киритилмайди","Ходимлар фойдаланишмайди","Инструментлар кўп, лекин тартиб йўқ","Масъул шахс йўқ","Аниқ ҳисоботлар шаклланмайди","Барибир шахсан сўрашга тўғри келади","Бизда мос инструментларнинг ўзи йўқ"]},
+    {id:"tools_top3", type:"text", text:"Агар ягона бошқарув панели бўлса, ҳар куни қайси 3 та кўрсаткични кўришни хоҳлардингиз?"}
+  ]},
+  { id:"founder", title:"5-блок. Қарор қабул қилиш ва таъсисчи шахсияти", purpose:"Бизнесдаги tor joylar — bottlenecklarni аниқлаш.", questions:[
+    {id:"founder_decisions", type:"checkbox", score:true, text:"Қайси қарорлар ҳалигача албатта сиз орқали ўтади?", options:["Харидлар","Сотув / чегирмалар","Ишга олиш","Ишлаб чиқариш масалалари","Молиявий масалалар","Мижозлар билан баҳсли вазиятлар","Вазифаларни тақсимлаш","Деярли барча муҳим қарорлар"]},
+    {id:"founder_fire", type:"radio", score:true, text:"Ҳафтасига қанча вақтингиз кутилмаган муаммоларни ҳал қилишга кетади?", options:["Деярли вақт кетмайди","2–5 соат","5–10 соат","10–20 соат","Ҳафтанинг катта қисми"]},
+    {id:"founder_delegate", type:"text", text:"Ишни бошқаларга топшириш энг қийини нима?"},
+    {id:"founder_change", type:"checkbox", score:true, reverse:true, text:"Келаси 6–12 ой ичида эгалик ролингизда нимани ўзгартирмоқчисиз?", options:["Операцион ишларда камроқ қатнашиш","Қарорларнинг бир қисмини раҳбарларга топшириш","Кўпроқ стратегия билан шуғулланиш","Бизнесни ўсишга тайёрлаш","Жамоада тартиб ўрнатиш","Кундалик назоратдан узоқлашиш","Ҳозирча билмайман"]}
+  ]},
+  { id:"contact", title:"Якуний блок. Контактлар ва тайёрлик", purpose:"Мурожаат даражаси, қарор қабул қилувчилар ва боғланиш маълумотларини олиш.", questions:[
+    {id:"ready_level", type:"radio", score:true, text:"Бизнесни тизимлаштириш мавзуси сиз учун ҳозир қанчалик долзарб?", options:["Шунчаки ўрганяпман","Долзарб, лекин шошилинч эмас","Сезиларли муаммолар бор","Яқин орада ҳал қилиш керак","Жуда муҳим, бундай давом этиб бўлмайди"]},
+    {id:"decision_people", type:"radio", text:"Учрашувда / қарор қабул қилишда кимлар қатнашади?", options:["Фақат ўзим","Мен ва шеригим","Мен ва раҳбар / директор","Жамоадан бир неча киши"]},
+    {id:"name", type:"text", required:true, text:"Исмингиз:"},
+    {id:"phone", type:"tel", required:true, text:"Телефон / Telegram:"},
+    {id:"contact_format", type:"radio", text:"Боғланиш учун қулай формат:", options:["Telegram","Телефон қўнғироғи"]}
+  ]}
+];
+
+const form = document.getElementById('surveyForm');
+const nav = document.getElementById('nav');
+function render(){
+  nav.innerHTML = survey.map((b,i)=>`<button type="button" data-jump="${b.id}" class="${i===0?'active':''}">${b.title}<small>${b.questions.length} savol</small></button>`).join('');
+  form.innerHTML = survey.map(block=>`<section class="card block" id="${block.id}"><h2>${block.title}</h2><p class="purpose">${block.purpose}</p>${block.questions.map(renderQuestion).join('')}</section>`).join('');
+  bindInputs(); updateProgress();
+}
+function renderQuestion(q){
+  const req = q.required ? 'required' : '';
+  let input = '';
+  if(q.type==='radio' || q.type==='checkbox'){
+    input = `<div class="options">${q.options.map((o,idx)=>`<label class="opt"><input type="${q.type}" name="${q.id}" value="${escapeHtml(o)}" data-q="${q.id}" ${req}> <span>${o}</span></label>`).join('')}</div>`;
+  } else if(q.type==='range'){
+    input = `<div class="rangeRow"><input type="range" min="${q.min}" max="${q.max}" value="5" name="${q.id}" data-q="${q.id}"><span class="rangeNum" id="num_${q.id}">5</span></div>`;
+  } else if(q.type==='tel'){
+    input = `<input type="tel" name="${q.id}" data-q="${q.id}" placeholder="+998 ... yoki @telegram" ${req}>`;
+  } else {
+    input = `<textarea name="${q.id}" data-q="${q.id}" placeholder="Javobingizni yozing..." ${req}></textarea>`;
+  }
+  return `<div class="q"><div class="qTitle">${q.text}</div>${input}</div>`;
+}
+function escapeHtml(str){return String(str).replace(/[&<>"]/g, s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[s]));}
+function bindInputs(){
+  document.querySelectorAll('[data-q]').forEach(el=>el.addEventListener('input',()=>{ if(el.type==='range') document.getElementById('num_'+el.name).textContent=el.value; updateProgress(); saveDraft(false); }));
+  document.querySelectorAll('[data-jump]').forEach(btn=>btn.addEventListener('click',()=>document.getElementById(btn.dataset.jump).scrollIntoView({behavior:'smooth'})));
+  window.addEventListener('scroll',()=>{let active=survey[0].id; survey.forEach(b=>{const r=document.getElementById(b.id).getBoundingClientRect(); if(r.top<160) active=b.id;}); document.querySelectorAll('[data-jump]').forEach(b=>b.classList.toggle('active', b.dataset.jump===active));});
+}
+function collect(){
+  const data = { submittedAt:new Date().toISOString(), answers:{} };
+  survey.flatMap(b=>b.questions).forEach(q=>{
+    const els=[...document.querySelectorAll(`[name="${q.id}"]`)];
+    if(q.type==='checkbox') data.answers[q.id]=els.filter(e=>e.checked).map(e=>e.value);
+    else if(q.type==='radio') data.answers[q.id]=(els.find(e=>e.checked)||{}).value || '';
+    else data.answers[q.id]=els[0]?.value?.trim() || '';
+  });
+  data.score = calculateScore(data.answers);
+  data.summary = getSummary(data.score.totalPercent);
+  return data;
+}
+function calculateScore(a){
+  const byBlock={}; let total=0, max=0;
+  survey.forEach(block=>{
+    let bScore=0,bMax=0;
+    block.questions.filter(q=>q.score).forEach(q=>{
+      let s=0,m=10;
+      const val=a[q.id];
+      if(q.type==='radio'){
+        const idx=q.options.indexOf(val); s = idx<0 ? 0 : q.reverse ? Math.round(((idx+1)/q.options.length)*10) : Math.round(((q.options.length-idx)/q.options.length)*10);
+      } else if(q.type==='checkbox'){
+        const count=Array.isArray(val)?val.length:0;
+        if(q.reverse) s = Math.min(10, Math.round((count/Math.max(1,q.options.length))*10));
+        else s = Math.max(0, 10 - Math.round((count/Math.max(1,q.options.length))*10));
+      } else if(q.type==='range'){
+        const n=Number(val||0); s = q.reverse ? n : 11-n;
+      }
+      bScore+=s; bMax+=m;
+    });
+    byBlock[block.id]={title:block.title, score:bScore, max:bMax, percent:bMax?Math.round(bScore/bMax*100):0}; total+=bScore; max+=bMax;
+  });
+  return {total,totalMax:max,totalPercent:Math.round(total/max*100),byBlock};
+}
+function getSummary(p){
+  if(p>=75) return {level:"Tizimli biznesga yaqin", text:"Asosiy boshqaruv elementi bor. Endi standartlashtirish, KPI va delegatsiyani chuqurlashtirish kerak."};
+  if(p>=55) return {level:"O‘sishga tayyor, lekin risklar bor", text:"Jarayonlar qisman ishlayapti. Tor joylar ko‘paymasidan oldin boshqaruv paneli, reglament va javobgarlik xaritasi kerak."};
+  if(p>=35) return {level:"Operatsion xaos xavfi yuqori", text:"Biznes ko‘p jihatdan odamlar va qo‘lda nazoratga bog‘langan. Tezkor audit va 90 kunlik tizimlashtirish reja zarur."};
+  return {level:"Kritik bog‘liqlik", text:"Tizim zaif, founder bottleneck kuchli bo‘lishi mumkin. Avval moliya, sotuv, vazifa nazorati va mas’uliyatni ajratish kerak."};
+}
+function updateProgress(){
+  const qs=survey.flatMap(b=>b.questions); let filled=0;
+  qs.forEach(q=>{const els=[...document.querySelectorAll(`[name="${q.id}"]`)]; if(q.type==='checkbox'||q.type==='radio'){ if(els.some(e=>e.checked)) filled++; } else if(els[0]?.value) filled++;});
+  const p=Math.round(filled/qs.length*100); document.getElementById('progressText').textContent=p+'%'; document.getElementById('progressBar').style.width=p+'%';
+}
+function validate(data){
+  const missing = survey.flatMap(b=>b.questions).filter(q=>q.required && !data.answers[q.id]).map(q=>q.text);
+  if(missing.length){ alert('Majburiy maydonlar to‘ldirilmadi:\n- '+missing.join('\n- ')); return false; }
+  return true;
+}
+function showResult(data){
+  const el=document.getElementById('result'); el.style.display='block';
+  el.innerHTML=`<h2>Natija: ${data.score.totalPercent}% — ${data.summary.level}</h2><p>${data.summary.text}</p><div class="grid3"><div class="metric"><span>Umumiy ball</span><b>${data.score.total}/${data.score.totalMax}</b></div><div class="metric"><span>Ustuvor blok</span><b>${lowestBlock(data).title}</b></div><div class="metric"><span>Kontakt</span><b>${escapeHtml(data.answers.name||'-')}</b></div></div>`;
+  el.scrollIntoView({behavior:'smooth'});
+}
+function lowestBlock(data){return Object.values(data.score.byBlock).filter(b=>b.max>0).sort((a,b)=>a.percent-b.percent)[0] || {title:'-'};}
+async function submitData(){
+  const data=collect(); if(!validate(data)) return;
+  if(CONFIG.API_URL){
+    try{ await fetch(CONFIG.API_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)}); }
+    catch(e){ console.warn(e); alert('Backendga yuborishda xatolik. Demo bazaga saqlanadi.'); saveLocalResponse(data); }
+  } else saveLocalResponse(data);
+  showResult(data); localStorage.removeItem('surveyDraft');
+}
+function saveLocalResponse(data){const arr=JSON.parse(localStorage.getItem('surveyResponses')||'[]'); arr.push(data); localStorage.setItem('surveyResponses',JSON.stringify(arr));}
+function saveDraft(notify=true){localStorage.setItem('surveyDraft', JSON.stringify(collect().answers)); if(notify) alert('Draft saqlandi.');}
+function loadDraft(){const d=JSON.parse(localStorage.getItem('surveyDraft')||'null'); if(!d) return; Object.entries(d).forEach(([k,v])=>{const els=[...document.querySelectorAll(`[name="${k}"]`)]; if(Array.isArray(v)) els.forEach(e=>e.checked=v.includes(e.value)); else els.forEach(e=>{ if(e.type==='radio') e.checked=e.value===v; else {e.value=v; if(e.type==='range') document.getElementById('num_'+k).textContent=v;} });}); updateProgress();}
+function resetForm(){ if(confirm('Barcha javoblar tozalansinmi?')){ form.reset(); localStorage.removeItem('surveyDraft'); updateProgress(); document.getElementById('result').style.display='none'; }}
+function renderAdmin(){
+  const rows=JSON.parse(localStorage.getItem('surveyResponses')||'[]');
+  const avg=rows.length?Math.round(rows.reduce((s,r)=>s+r.score.totalPercent,0)/rows.length):0;
+  const critical=rows.filter(r=>r.score.totalPercent<35).length;
+  document.getElementById('adminMetrics').innerHTML=`<div class="metric"><span>Jami so‘rov</span><b>${rows.length}</b></div><div class="metric"><span>O‘rtacha ball</span><b>${avg}%</b></div><div class="metric"><span>Kritik leadlar</span><b>${critical}</b></div>`;
+  const table=document.getElementById('responsesTable');
+  table.innerHTML=`<thead><tr><th>Sana</th><th>Ism</th><th>Telefon</th><th>Ball</th><th>Daraja</th><th>Eng zaif blok</th><th>Qulay format</th></tr></thead><tbody>${rows.map(r=>`<tr><td>${new Date(r.submittedAt).toLocaleString()}</td><td>${escapeHtml(r.answers.name||'')}</td><td>${escapeHtml(r.answers.phone||'')}</td><td>${r.score.totalPercent}%</td><td>${r.summary.level}</td><td>${lowestBlock(r).title}</td><td>${escapeHtml(r.answers.contact_format||'')}</td></tr>`).join('')}</tbody>`;
+  drawChart(rows);
+}
+function drawChart(rows){
+  const c=document.getElementById('chart'), ctx=c.getContext('2d'); ctx.clearRect(0,0,c.width,c.height); ctx.font='14px Arial'; ctx.fillText('So‘rovlar bo‘yicha umumiy ball (%)',20,26);
+  const vals=rows.slice(-12).map(r=>r.score.totalPercent); const w=52,g=16,base=240,maxH=175; ctx.strokeRect(45,50,820,190);
+  vals.forEach((v,i)=>{const h=v/100*maxH; const x=65+i*(w+g); ctx.fillRect(x,base-h,w,h); ctx.fillText(v+'%',x,base-h-8);});
+}
+function download(name, content, type){const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([content],{type})); a.download=name; a.click();}
+function toCsv(rows){const headers=['submittedAt','name','phone','score','level','weakBlock','contact_format']; const lines=[headers.join(',')]; rows.forEach(r=>lines.push([r.submittedAt,r.answers.name,r.answers.phone,r.score.totalPercent,r.summary.level,lowestBlock(r).title,r.answers.contact_format].map(v=>'"'+String(v||'').replaceAll('"','""')+'"').join(','))); return lines.join('\n');}
+
+document.getElementById('submitBtn').onclick=submitData;
+document.getElementById('saveBtn').onclick=()=>saveDraft(true);
+document.getElementById('resetBtn').onclick=resetForm;
+document.getElementById('loginBtn').onclick=()=>{ if(document.getElementById('adminPass').value===CONFIG.ADMIN_PASSWORD){document.getElementById('adminLogin').style.display='none';document.getElementById('adminPanel').style.display='block';renderAdmin();} else alert('Parol xato'); };
+document.getElementById('exportCsv').onclick=()=>{const rows=JSON.parse(localStorage.getItem('surveyResponses')||'[]'); download('survey_responses.csv',toCsv(rows),'text/csv;charset=utf-8')};
+document.getElementById('exportJson').onclick=()=>{const rows=JSON.parse(localStorage.getItem('surveyResponses')||'[]'); download('survey_responses.json',JSON.stringify(rows,null,2),'application/json')};
+document.getElementById('clearData').onclick=()=>{if(confirm('Demo bazadagi javoblar o‘chirilsinmi?')){localStorage.removeItem('surveyResponses');renderAdmin();}};
+render(); loadDraft();
+if(new URLSearchParams(location.search).get('admin')==='1') document.getElementById('adminLogin').style.display='block';
+</script>
+</body>
+</html>
